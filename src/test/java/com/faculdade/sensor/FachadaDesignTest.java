@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** Provas da estrutura do padrão: interface pequena, dependência de mão única, equivalência com o uso manual. */
 class FachadaDesignTest {
 
     private static final List<Class<?>> SUBSISTEMA = List.of(ConversorUnidades.class, Calibrador.class,

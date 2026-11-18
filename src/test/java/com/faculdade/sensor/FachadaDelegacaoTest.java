@@ -7,10 +7,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Prova que a fachada ORQUESTRA o subsistema: usa cada peça, na ordem certa, e pára
- * no primeiro passo que falha. Cada peça é trocada por um espião que registra a chamada.
- */
 class FachadaDelegacaoTest {
 
     private final List<String> chamadas = new ArrayList<>();
@@ -109,7 +105,6 @@ class FachadaDelegacaoTest {
 
     @Test
     void fachadaDevePoderUsarPecasSubstituidasPeloCliente() {
-        // Um classificador mais rígido, injetado pelo cliente avançado: tudo acima de 50 é crítico.
         ClassificadorAlerta rigido = new ClassificadorAlerta() {
             @Override
             public Nivel classificar(double valor, double limiteAlerta, double limiteCritico) {

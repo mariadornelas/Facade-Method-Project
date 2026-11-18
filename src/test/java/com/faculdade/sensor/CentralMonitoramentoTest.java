@@ -8,7 +8,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** A fachada vista de fora: o que o cliente consegue fazer com ela, sem conhecer o subsistema. */
 class CentralMonitoramentoTest {
 
     private CentralMonitoramento central;
@@ -20,8 +19,6 @@ class CentralMonitoramentoTest {
         central.cadastrar(new ConfiguracaoSensor("P-01", "kPa", "bar", 1.0, 0.0, 0, 100, 8, 10));
         central.cadastrar(new ConfiguracaoSensor("V-01", "mm/s", "mm/s", 1.02, 0.0, 0, 100, 4.5, 7.1));
     }
-
-    // ---- o pipeline completo numa chamada ----
 
     @Test
     void processarDeveConverterCalibrarEClassificarTemperatura() {
@@ -50,8 +47,6 @@ class CentralMonitoramentoTest {
         // 7,0 mm/s sozinho seria ALERTA (< 7,1), mas com o ganho 1,02 vira 7,14 = CRITICO.
         assertEquals(Nivel.CRITICO, central.processar("V-01", 7.0).nivel());
     }
-
-    // ---- registro e notificação ----
 
     @Test
     void cadaLeituraValidaDeveIrParaOHistoricoNaOrdem() {
@@ -85,12 +80,10 @@ class CentralMonitoramentoTest {
                 "[CRITICO] P-01: 10.50 bar (bruto 1050.0)"), central.alertas());
     }
 
-    // ---- leituras inválidas: nada muda ----
-
     @Test
     void leituraForaDaFaixaDeveSerRecusadaSemRegistrarNemNotificar() {
-        assertThrows(IllegalArgumentException.class, () -> central.processar("P-01", -50.0));   // -0,5 bar
-        assertThrows(IllegalArgumentException.class, () -> central.processar("T-01", 5000.0));  // ~2760 °C
+        assertThrows(IllegalArgumentException.class, () -> central.processar("P-01", -50.0));
+        assertThrows(IllegalArgumentException.class, () -> central.processar("T-01", 5000.0));
 
         assertTrue(central.historico("P-01").isEmpty());
         assertTrue(central.historico("T-01").isEmpty());
@@ -120,8 +113,6 @@ class CentralMonitoramentoTest {
         assertThrows(NullPointerException.class, () -> central.processar(null, 1.0));
     }
 
-    // ---- resumo ----
-
     @Test
     void resumoDeveContarSensoresPelaUltimaLeitura() {
         central.processar("T-01", 185.0);    // alerta
@@ -147,8 +138,6 @@ class CentralMonitoramentoTest {
         assertEquals(0L, r.get(Nivel.CRITICO));
     }
 
-    // ---- cadastro ----
-
     @Test
     void cadastroDeveRecusarIdRepetido() {
         assertThrows(IllegalStateException.class,
@@ -168,7 +157,6 @@ class CentralMonitoramentoTest {
         assertThrows(NullPointerException.class, () -> central.cadastrar(null));
     }
 
-    // ---- configuração ----
 
     @Test
     void configuracaoDeveValidarSeusCampos() {

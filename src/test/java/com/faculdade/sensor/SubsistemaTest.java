@@ -6,13 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * As classes do subsistema funcionam SOZINHAS, sem a fachada. É isso que permite a um
- * cliente avançado usá-las diretamente.
- */
 class SubsistemaTest {
-
-    // ---- ConversorUnidades ----
 
     private final ConversorUnidades conversor = new ConversorUnidades();
 
@@ -50,8 +44,6 @@ class SubsistemaTest {
         assertThrows(NullPointerException.class, () -> conversor.suporta(null, "C"));
     }
 
-    // ---- Calibrador ----
-
     @Test
     void calibradorDeveAplicarGanhoEOffset() {
         Calibrador c = new Calibrador();
@@ -60,8 +52,6 @@ class SubsistemaTest {
         assertEquals(10.0, c.aplicar(10.0, 1.0, 0.0));
         assertEquals(9.5, c.aplicar(10.0, 1.0, -0.5));
     }
-
-    // ---- ValidadorFaixa ----
 
     @Test
     void validadorDeveAceitarDentroDaFaixaIncluindoOsExtremos() {
@@ -82,8 +72,6 @@ class SubsistemaTest {
         assertThrows(IllegalArgumentException.class, () -> v.verificar(Double.POSITIVE_INFINITY, 0, 10));
     }
 
-    // ---- ClassificadorAlerta ----
-
     @Test
     void classificadorDeveUsarLimitesInclusivos() {
         ClassificadorAlerta c = new ClassificadorAlerta();
@@ -93,8 +81,6 @@ class SubsistemaTest {
         assertEquals(Nivel.ALERTA, c.classificar(89.9, 80, 90));
         assertEquals(Nivel.CRITICO, c.classificar(90.0, 80, 90));
     }
-
-    // ---- RepositorioHistorico ----
 
     private static ResultadoLeitura resultado(String id, double valor, Nivel nivel) {
         return new ResultadoLeitura(id, valor, valor, "u", nivel);
@@ -150,8 +136,6 @@ class SubsistemaTest {
     void repositorioDeveRejeitarNulo() {
         assertThrows(NullPointerException.class, () -> new RepositorioHistorico().adicionar(null));
     }
-
-    // ---- Notificador ----
 
     @Test
     void notificadorNaoDeveGerarMensagemParaNormal() {
